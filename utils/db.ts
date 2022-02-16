@@ -1,7 +1,7 @@
 import {createPool} from "mysql2/promise";
 
 export const pool = createPool({
-    db: 'localhost',
+    host: 'localhost',
     user: 'root',
     database: 'arena',
     namedPlaceholders: true,

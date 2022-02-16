@@ -5,8 +5,8 @@ export const warriorRouter = Router();
 
 warriorRouter
 .get('/add-form', (req, res) => {
-    res.send('formularz dodawania wojownika');
+    res.render('warrior/add-form');
 })
 .post('/', (req, res) => {
-    res.send('dodawanie wojownika');
+    res.render('warrior/warrior-added')
 })

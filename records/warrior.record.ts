@@ -1,6 +1,9 @@
 import {ValidationError} from "../utils/errors";
 import {v4 as uuid} from "uuid";
 import {pool} from "../utils/db";
+import {FieldPacket} from "mysql2";
+
+type warriorRecordResults = [WarriorRecord[], FieldPacket[]];
 
 export class WarriorRecord {
     public id?: string;
@@ -54,15 +57,33 @@ export class WarriorRecord {
         return this.id;
     }
     async update(): Promise<void> {
-
+        await pool.execute("UPDATE `warriors` SET `wins` = :wins", {
+            wins: this.wins,
+        })
     }
     static async getOne(id: string): Promise<WarriorRecord | null> {
-        return null;
+       const [results] = await pool.execute("SELECT * FROM `warriors` WHERE `id` = :id", {
+            id: id,
+        }) as warriorRecordResults;
+       return results.length === 0 ? null : results[0];
     }
     static async listAll(): Promise<WarriorRecord[]> {
-        return [];
+        const [results] = await pool.execute("SELECT * FROM `warriors`") as warriorRecordResults;
+
+        return results.map(obj => new WarriorRecord(obj));
     }
     static async listTop(topCount: number): Promise<WarriorRecord[]> {
-        return [];
+        const [results] = await pool.execute("SELECT * FROM `warriors` ORDER BY `wins` DESC LIMIT :topCount", {
+            topCount: topCount,
+        }) as warriorRecordResults;
+
+        return results.map(obj => new WarriorRecord(obj));
+    }
+    static async isNameTaken(name: string): Promise<boolean> {
+        const [results] = await pool.execute("SELECT * FROM `warriors` WHERE `name` = :name", {
+            name,
+        }) as warriorRecordResults
+
+        return results.length > 0;
     }
 }

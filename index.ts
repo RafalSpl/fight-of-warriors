@@ -9,15 +9,13 @@ import {hallOfFameRouter} from "./routers/hall-of-fame";
 // import '/utils/db';
 import {WarriorRecord} from "./records/warrior.record";
 
-const w = new WarriorRecord({
-    name: 'dd',
-    agility: 5,
-    defence: 1,
-    power: 1,
-    stamina: 3,
-})
-
-console.log(w);
+// const w = new WarriorRecord({
+//     name: 'dd',
+//     agility: 5,
+//     defence: 1,
+//     power: 1,
+//     stamina: 3,
+// })
 
 const app = express();
 
